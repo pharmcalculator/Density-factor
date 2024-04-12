@@ -1,0 +1,158 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Density Factor Calculator</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      text-align: center;
+    }
+
+    h1 {
+      font-size: 28px;
+      margin-bottom: 20px;
+    }
+
+    h2 {
+      font-size: 28px;
+      margin-top: 40px;
+      margin-bottom: 10px;
+    }
+
+    .container {
+      display: flex;
+      justify-content: center;
+      align-items: flex-start;
+    }
+
+    .table-container {
+      margin: 0 20px;
+    }
+
+    table {
+      margin: 0 auto;
+      border-collapse: collapse;
+      width: 600px;  
+      font-size: 24px;
+    }
+
+    th, td {
+      padding: 8px;
+      text-align: left;
+    }
+
+    th {
+      background-color: #f2f2f2;
+    }
+
+    input[type="number"] {
+      width: 100px;
+      font-size: 24px;
+     
+    }
+
+    button {
+      margin-top: 20px;
+      padding: 10px 20px;
+      font-size: 28px;
+      background-color: #4CAF50;
+      color: white;
+      border: none;
+      cursor: pointer;
+    }
+
+    button:hover {
+      background-color: #45a049;
+    }
+
+    .result-table {
+      margin-top: 20px;
+      margin-bottom: 20px;
+      font-size: 24px;
+    }
+
+    .result-table th {
+      background-color: #4CAF50;
+      color: white;
+    }
+
+    .result-table td {
+      padding: 20px;
+    }
+
+    p {
+      font-size: 24px;
+    }
+
+    body {
+      font-size: 24px;    
+    }
+
+  </style>
+  <script>
+    function normalizeToGrams(value, unit) {
+      if (unit === "milligram") {
+        return value / 1000; // Convert milligrams to grams
+      } else {
+        return value; // Already in grams
+      }
+    }
+    
+    function calculateDensityFactor() {
+      // Get the input values from the form
+      var amountBlankSuppository = parseFloat(document.getElementById("amountBlankSuppository").value);
+      var unitAmountBlankSuppository = document.getElementById("unitAmountBlankSuppository").value;
+      var weightMedicationPerSuppository = parseFloat(document.getElementById("weightMedicationPerSuppository").value);
+      var unitWeightMedicationPerSuppository = document.getElementById("unitWeightMedicationPerSuppository").value;
+      var weightMedicatedSuppository = parseFloat(document.getElementById("weightMedicatedSuppository").value);
+      var unitWeightMedicatedSuppository = document.getElementById("unitWeightMedicatedSuppository").value;
+      
+      // Normalize values to grams
+      amountBlankSuppository = normalizeToGrams(amountBlankSuppository, unitAmountBlankSuppository);
+      weightMedicationPerSuppository = normalizeToGrams(weightMedicationPerSuppository, unitWeightMedicationPerSuppository);
+      weightMedicatedSuppository = normalizeToGrams(weightMedicatedSuppository, unitWeightMedicatedSuppository);
+      
+      // Perform the calculation
+      var densityFactor = weightMedicationPerSuppository / (amountBlankSuppository - weightMedicatedSuppository + weightMedicationPerSuppository);
+      
+      // Display the result with the equation
+      var resultText = "The density factor is calculated using the equation: DF = B / (A - C + B)";
+      resultText += "<br>";
+      resultText += "Where DF is the density factor, A is the weight of the blank suppository, B is the weight of the medication per suppository, and C is the weight of the medicated suppository.";
+      resultText += "<br><br>";
+      resultText += "The density factor is: " + densityFactor.toFixed(2);
+      
+      document.getElementById("densityFactorResult").innerHTML = resultText;
+    }
+  </script>
+</head>
+<body>
+  <h1>Density Factor Calculator</h1>
+  <form>
+    <label for="amountBlankSuppository">Weight of Blank Suppository (A):</label>
+    <input type="number" id="amountBlankSuppository" step="0.01" required>
+    <select id="unitAmountBlankSuppository">
+      <option value="gram" selected>g</option>
+      <option value="milligram">mg</option>
+    </select><br><br>
+    
+    <label for="weightMedicationPerSuppository">Weight of drug per Suppository (B):</label>
+    <input type="number" id="weightMedicationPerSuppository" step="0.01" required>
+    <select id="unitWeightMedicationPerSuppository">
+      <option value="gram" selected>g</option>
+      <option value="milligram">mg</option>
+    </select><br><br>
+    
+    <label for="weightMedicatedSuppository">Weight of Medicated Suppository (C):</label>
+    <input type="number" id="weightMedicatedSuppository" step="0.01" required>
+    <select id="unitWeightMedicatedSuppository">
+      <option value="gram" selected>g</option>
+      <option value="milligram">mg</option>
+    </select><br><br>
+    
+    <button type="button" onclick="calculateDensityFactor()">Calculate</button>
+  </form>
+  
+  <p id="densityFactorResult"></p>
+</body>
+</html>
